@@ -1,6 +1,6 @@
 from qt_core import *
 
-class ButtonController(QObject):
+class ButtonController(QWidget):
     def __init__(self):
         super().__init__()
         self.app = QWidget()
@@ -17,7 +17,7 @@ class ButtonController(QObject):
             baudRate=QtSerialPort.QSerialPort.Baud9600,
             readyRead=self.receiveButton)
         if not self.serial.isOpen():
-            self.serial.open(QIODevice.ReadWrite)
+            self.serial.open(QIODevice.ReadWrite)  
 
     def receiveButton(self):
         while self.serial.canReadLine():
@@ -42,3 +42,14 @@ class ButtonController(QObject):
                     self.button_7.clicked.emit()
             except:
                 pass
+
+    
+
+    
+
+# class KeyPress(QWidget):
+#     def __init__():
+#         super().__init__()
+
+    
+

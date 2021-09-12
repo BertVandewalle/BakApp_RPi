@@ -1,5 +1,6 @@
 # IMPORT PACKAGES AND MODULES
 # ///////////////////////////////////////////////////////////////
+from key_functions import keyPressEventHandler
 from stat_calculations import calculate_winchance_red
 import sys
 import os
@@ -41,10 +42,12 @@ os.environ["QT_FONT_DPI"] = "96"
 class MainApp(QApplication):
     def __init__(self, argv):
         super().__init__(argv)
-        if str(argv[1]) == "f":
-            self.fullscreen = 1
-        else: 
-            self.fullscreen = 0
+        try: 
+            if str(argv[1]) == "f":
+                self.fullscreen = 1
+            else: 
+                self.fullscreen = 0
+        except: self.fullscreen = 0
 
         # Initialize settings
         settings = Settings()
@@ -59,7 +62,7 @@ class MainApp(QApplication):
         # Initialize data
         self.dataInitializer = DataInitializer(self.dataController,self.settings,self.setupUI)
 
-
+  
        
     def setupUI(self):
         # Initialize gameobject
@@ -235,7 +238,7 @@ class MainApp(QApplication):
 # ///////////////////////////////////////////////////////////////
 class MainWindow(QMainWindow):
 
-    def __init__(self,buttonController,app:MainApp,dti:DataInitializer):
+    def __init__(self,buttonController:ButtonController,app:MainApp,dti:DataInitializer):
         super().__init__()
         self.btc = buttonController
         self.dti = dti
@@ -243,6 +246,9 @@ class MainWindow(QMainWindow):
         self.ui = UI_MainWindow()
         self.ui.setup_ui(self,dti=self.dti,gc=self.app.gc)
         self.initializeUI()
+        
+    def keyPressEvent(self,event):
+        keyPressEventHandler(app.btc,event=event)
         
 
     def initializeUI(self):
@@ -387,6 +393,8 @@ class GamePauseDialog(QDialog):
         self.ui = Ui_dialog_gamePaused()
         self.ui.setupUi(self)
 
+    def keyPressEvent(self,event):
+        keyPressEventHandler(self.btc,event)
 # GAME CANCEL DIALOG
 # ///////////////////////////////////////////////////////////////
 class GameCancelDialog(QDialog):
@@ -396,6 +404,9 @@ class GameCancelDialog(QDialog):
         self.ui = Ui_dialog_gameCancel()
         self.ui.setupUi(self)
 
+    def keyPressEvent(self,event):
+        keyPressEventHandler(self.btc,event)
+
 # GAME FINISHED DIALOG
 # ///////////////////////////////////////////////////////////////
 class GameFinishDialog(QDialog):
@@ -404,6 +415,9 @@ class GameFinishDialog(QDialog):
         self.btc = buttonController
         self.ui = Ui_dialog_gameFinished()
         self.ui.setupUi(self)
+
+    def keyPressEvent(self,event):
+        keyPressEventHandler(self.btc,event)
                 
 
 
