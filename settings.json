@@ -1,0 +1,31 @@
+{
+    "app_name": "BakApp",
+    "version" : "v1.0.0",
+    "theme_name" : "default",
+    "startup_size": [
+        1024,
+        768
+    ],
+    "minimum_size": [
+        960,
+        540
+    ],
+    "font" : {
+        "family" : "Segoe UI",
+        "title_size" : 10,
+        "text_size" : 9
+    },
+    "apiURL": "https://bakapp.bertvandewalle.com/api",
+    "player_images" : { 
+        "Bert" : "Bert.jpg",
+        "Guest" : "Guest.jpg",
+        "Jonas" : "Jonas.jpg",
+        "Karel" : "Karel.jpg",
+        "Louis" : "Louis.jpg",
+        "Matthijs" : "Matthijs.jpg",
+        "Nicolas" : "Nicolas.jpg",
+        "Coghe" : "Stef C.jpg",
+        "Stef D" : "Stef D.jpg",
+        "Tiemen" : "Tiemen.jpg"
+    }
+}
