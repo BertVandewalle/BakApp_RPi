@@ -18,14 +18,14 @@
     "apiURL": "https://bakapp.bertvandewalle.com/api",
     "player_images" : { 
         "Bert" : "Bert.jpg",
-        "Guest" : "Guest.jpg",
-        "Jonas" : "Jonas.jpg",
-        "Karel" : "Karel.jpg",
-        "Louis" : "Louis.jpg",
-        "Matthijs" : "Matthijs.jpg",
+        "Guest" : "Guest.JPG",
+        "Jonas" : "Jonas.JPG",
+        "Karel" : "Karel.JPG",
+        "Louis" : "Louis.JPG",
+        "Matthijs" : "Matthijs.JPG",
         "Nicolas" : "Nicolas.jpg",
-        "Coghe" : "Stef C.jpg",
+        "Coghe" : "Stef C.JPG",
         "Stef D" : "Stef D.jpg",
-        "Tiemen" : "Tiemen.jpg"
+        "Tiemen" : "Tiemen.JPG"
     }
 }
