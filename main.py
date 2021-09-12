@@ -41,6 +41,10 @@ os.environ["QT_FONT_DPI"] = "96"
 class MainApp(QApplication):
     def __init__(self, argv):
         super().__init__(argv)
+        if argv[0] == "f":
+            self.fullscreen = 1
+        else: 
+            self.fullscreen = 0
 
         # Initialize settings
         settings = Settings()
@@ -62,7 +66,8 @@ class MainApp(QApplication):
         self.gc = GameController(self.dataInitializer)
         # create main window
         self.main_window = MainWindow(self.btc,self,self.dataInitializer)
-        self.main_window.show()
+        if self.fullscreen: self.main_window.showFullScreen()
+        else: self.main_window.show()
 
         # create game paused dialog
         self.game_pause_dialog = GamePauseDialog(self.btc)
