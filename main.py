@@ -41,7 +41,7 @@ os.environ["QT_FONT_DPI"] = "96"
 class MainApp(QApplication):
     def __init__(self, argv):
         super().__init__(argv)
-        if argv[0] == "f":
+        if str(argv[1]) == "f":
             self.fullscreen = 1
         else: 
             self.fullscreen = 0
