@@ -93,7 +93,7 @@ class DataInitializer(QObject):
         if self.count == 4:
             self.finished.emit()
 
-    def findPlayerFromId(self, players:list[Player]=None, id:str=None):
+    def findPlayerFromId(self, players=None, id:str=None):
             for p in players: 
                 if str(p.id) == str(id): return p
             #logging.error(f"player with id {id} not found in {players}") 

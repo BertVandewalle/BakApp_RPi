@@ -15,7 +15,7 @@ from qt_core import *
 
 class PyPlayerSelectionWidget(QWidget):
     PLAYER_SPACING = 50
-    def __init__(self,players:list[Player]):
+    def __init__(self,players):
         super().__init__()
         # LOAD SETTINGS
         # ///////////////////////////////////////////////////////////////
