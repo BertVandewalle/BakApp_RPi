@@ -189,12 +189,17 @@ class MainApp(QApplication):
 
         self.state_Game_Running.entered.connect(self.main_window.initGameButtonConnections)
         self.state_Game_Running.entered.connect(self.gc.start)
+        self.state_Game_Running.entered.connect(self.main_window.ui.load_pages.page_game.widget_timeline.start)
+
 
         self.state_Game_Running.exited.connect(self.main_window.disconnectPlayerButtons)
         self.state_Game_Running.exited.connect(lambda: self.btc.button_5.clicked.disconnect(self.main_window.deleteGoal))
+        self.state_Game_Running.exited.connect(self.main_window.ui.load_pages.page_game.widget_timeline.pause)
+
 
         self.state_Game_Paused.entered.connect(self.game_pause_dialog.show)
         self.state_Game_Paused.entered.connect(self.gc.pause)
+        
         self.state_Game_Paused.entered.connect(self.game_pause_dialog.setFocus)
         self.state_Game_Paused.exited.connect(self.game_pause_dialog.close)
         #self.state_Game_Paused.exited.connect(self.gc.start)

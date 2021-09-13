@@ -9,7 +9,7 @@ import logging
 
 # CREATES HIGH QUALITY PIXMAP IRRESPECTIVE OF SCALE (ANTIALIASING)
 class ScaledCircularPicture(QWidget):
-    def __init__(self,pixMap:QPixmap,borderColor,parent=None):
+    def __init__(self,pixMap:QPixmap,borderColor,parent=None,size=40):
         super().__init__()
         if parent != None:
             self.setParent(parent)
@@ -26,32 +26,38 @@ class ScaledCircularPicture(QWidget):
 
         if borderColor == None: self._borderColor = self.themes['app_color']['context_color']
         else: self._borderColor = borderColor
+
+        self.setFixedSize(size,size)
         self._pixMap = pixMap
-        self.scaledPix = self._pixMap
-        self.border = self.createBorder(self.scaledPix)
-        sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
-        sizePolicy.setHeightForWidth(True)
-        self.setSizePolicy(sizePolicy)
+        # self.scaledPix = self._pixMap
+        # self.border = self.createBorder(self.scaledPix)
+
+        self.border = self.createBorder(self._pixMap)
+        self.border = self.border.scaled(self.size(),Qt.KeepAspectRatio, transformMode = Qt.SmoothTransformation)
+        self.scaledPix = self.circleImage(self._pixMap.scaled(self.border.size()*0.9, Qt.KeepAspectRatio, transformMode = Qt.SmoothTransformation))
+        self.originPic = QPoint(int((self.width()-self.scaledPix.width())/2),
+                     int((self.height()-self.scaledPix.height())/2))
+        self.originBorder = QPoint(int((self.width()-self.border.width())/2),
+                     int((self.height()-self.border.height())/2))
+        # sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        # sizePolicy.setHeightForWidth(True)
+        # self.setSizePolicy(sizePolicy)
+       
         self.repaint()
 
     def setPixmap(self,pixMap):
         self._pixMap = pixMap
+        self.scaledPix = self.circleImage(self._pixMap.scaled(self.border.size()*0.9, Qt.KeepAspectRatio, transformMode = Qt.SmoothTransformation))
         self.repaint()
 
     def paintEvent(self,event):
+        print("scaled pic paintevent")
         p = QPainter()
         p.begin(self)
         p.setRenderHint(QPainter.Antialiasing)
-        self.border = self.createBorder(self.scaledPix)
-        self.border = self.border.scaled(self.size(),Qt.KeepAspectRatio, transformMode = Qt.SmoothTransformation)
-        self.scaledPix = self.circleImage(self._pixMap.scaled(self.border.size()*0.9, Qt.KeepAspectRatio, transformMode = Qt.SmoothTransformation))
-        originPic = QPoint(int((self.width()-self.scaledPix.width())/2),
-                     int((self.height()-self.scaledPix.height())/2))
-        originBorder = QPoint(int((self.width()-self.border.width())/2),
-                     int((self.height()-self.border.height())/2))
-        
-        p.drawPixmap(originBorder,self.border)
-        p.drawPixmap(originPic, self.scaledPix)
+      
+        p.drawPixmap(self.originBorder,self.border)
+        p.drawPixmap(self.originPic, self.scaledPix)
         p.end()
 
     def sizeHint(self):
@@ -85,10 +91,6 @@ class ScaledCircularPicture(QWidget):
         source.fill(QColor(self._borderColor))
         target = self.circleImage(source)
         return target
-
-    def setPicture(self,pixmap:QPixmap):
-        self._pixMap = pixmap
-        self.repaint()
 
         
 

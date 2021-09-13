@@ -36,16 +36,16 @@ class TimeLineGoal(QWidget):
         self._layout = QHBoxLayout(self)
         self.label_time = QLabel(text=f"{self.time_minute}'")
         if self.team == "red":
-            self.widget_pic = ScaledCircularPicture(self.player.pixMap,self.red)
+            self.widget_pic = ScaledCircularPicture(self.player.pixMap,self.red,size=size)
             self.label_time.setAlignment(Qt.AlignRight|Qt.AlignVCenter)
             self._layout.addWidget(self.label_time)
             self._layout.addWidget(self.widget_pic,0,Qt.AlignRight|Qt.AlignVCenter)
         else:
-            self.widget_pic = ScaledCircularPicture(self.player.pixMap,self.green)
+            self.widget_pic = ScaledCircularPicture(self.player.pixMap,self.green,size=size)
             self.label_time.setAlignment(Qt.AlignLeft|Qt.AlignVCenter)
             self._layout.addWidget(self.widget_pic,0,Qt.AlignLeft|Qt.AlignVCenter)
             self._layout.addWidget(self.label_time)
-        self.widget_pic.setFixedSize(size,size)
+#        self.widget_pic.setFixedSize(size,size)
 
 class TimeLine(QWidget):
     goals = [TimeLineGoal]
@@ -64,7 +64,7 @@ class TimeLine(QWidget):
         self.green = self.themes['app_color']['green']
 
         self.gc = gc
-        self.gc.timer_fast.timeout.connect(self.moveGoalWidgets)
+        #self.start()
 
         self.goals = []
         self._layout = QVBoxLayout(self)
@@ -89,7 +89,10 @@ class TimeLine(QWidget):
         
         #self.redDefPlayer2.move(self.width()//2-self.redDefPlayer.width()-10,self.height()-50-self.redDefPlayer.height())
         #print(self.goals)
-
+        # for goal in self.goals:
+        #     try:
+        #         self.setPosition(goal,self.gc.game.duration_precise)
+        #     except Exception as e: print(e)
         p.end()
 
     def moveGoalWidgets(self):
@@ -102,7 +105,7 @@ class TimeLine(QWidget):
         #     try:
         #         self.goals[0].move(self.width()//2-self.goals[0].width(),self.height()-10)
         #     except Exception as e: print(f"{e} len(goals) = {len(self.goals)}")
-        self.repaint()
+        #self.repaint()
 
     def calculateHeight(self,goal:TimeLineGoal,time_current):
         if time_current > 0:
@@ -119,25 +122,42 @@ class TimeLine(QWidget):
         else: pass
 
     def addGoal(self,player:Player,team,time:float):
+        self.hide()
         goal = TimeLineGoal(time,player,team,parent=self)
         #goal = QLabel(text="Goal")
         goal.setFixedSize(100,60)
         self.goals.append(goal)
-        self._layout.addWidget(self.goals[-1])
+        #self._layout.addWidget(self.goals[-1])
+        #self.goals[-1].hide()
         self.setPosition(goal,time)
-        self.repaint()
+        #self.moveGoalWidgets()
+        self.show()
+        #self.goals[-1].show()
+        #self.repaint()
 
     def deleteLastGoal(self):
         if len(self.goals)>0:
-            self._layout.removeWidget(self.goals[-1])
-            self.goals[-1].destroy()
+            #self._layout.removeWidget(self.goals[-1])
+            self.hide()
+            self.goals[-1].deleteLater()
             self.goals.pop()
-            self.repaint()
+            self.show()
+            #self.moveGoalWidgets()
+            #self.repaint()
 
     def endGame(self):
         k = len(self.goals)
         for i in range(k):
             self.deleteLastGoal()
+
+    def pause(self):
+        try:
+            self.gc.timer_fast.timeout.disconnect(self.moveGoalWidgets)
+        except: pass
+
+    def start(self):
+        self.gc.timer_fast.timeout.connect(self.moveGoalWidgets)
+
 
 
         

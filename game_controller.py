@@ -21,7 +21,7 @@ class GameController(QObject):
         self.timer.start(1000)
         self.timer_fast = QTimer()
         self.timer_fast.timeout.connect(self.updateDurationPrecise)
-        self.timer_fast.start(100)
+        self.timer_fast.start(1000)
         self.finishedWidget = QWidget()
         self.finished = QPushButton(self.finishedWidget)
         self.validSelection = QPushButton(self.finishedWidget)
@@ -90,7 +90,7 @@ class GameController(QObject):
 
     def updateDurationPrecise(self):
         if self.running:
-            self.game.duration_precise += 0.10
+            self.game.duration_precise += 1.0
 
     def pause(self):
         self.running = False

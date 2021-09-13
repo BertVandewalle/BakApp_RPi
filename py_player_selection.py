@@ -116,6 +116,7 @@ class PyPlayerSelectionWidget(QWidget):
         self.layout_widget = QVBoxLayout()
         self.layout_widget.addLayout(self.layout_content)
         self.layout_widget.addWidget(self.bottom_button_bar_frame)
+        self.layout_widget.setSpacing(2)
         self.setLayout(self.layout_widget)
         self.bottom_button_bar_frame.hide()
     # def paintEvent(self,event):
@@ -144,7 +145,7 @@ class PlayerPicNameWidget(QWidget):
         # LABELS
         # ///////////////////////////////////////////////////////////////
         #self.widget_pic = ScaledHQPicture(player.pixMap)
-        self.widget_pic = ScaledCircularPicture(player.pixMap,self.text_color)
+        self.widget_pic = ScaledCircularPicture(player.pixMap,self.text_color,size=240)
         #self.widget_pic.setMinimumSize(200,500)
         self.label_name = QLabel(text=f"{player.name}")
         self.label_name.setStyleSheet(f"""color: {self.text_color};

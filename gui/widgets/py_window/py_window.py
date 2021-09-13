@@ -15,8 +15,8 @@ class PyWindow(QFrame):
         bg_color = "#2c313c",
         text_color = "#fff",
         text_font = "9pt 'Segoe UI'",
-        border_radius = 10,
-        border_size = 2,
+        border_radius = 0,
+        border_size = 0,
         border_color = "#343b48",
         enable_shadow = True
     ):

@@ -170,7 +170,7 @@ class PlayerStatWidget(QWidget):
         self.frame_widget = QFrame()
         self.layout_widget = QHBoxLayout(self.frame_widget)
         if position < 2 :
-            self.widget_pic = ScaledCircularPicture(game.players[position].pixMap,self.red)
+            self.widget_pic = ScaledCircularPicture(game.players[position].pixMap,self.red,size=60)
             self.layout_stats.addWidget(self.label_score,0,Qt.AlignRight|Qt.AlignBottom)
             self.layout_stats.addWidget(self.label_dElo,0,Qt.AlignRight|Qt.AlignTop)
 
@@ -180,7 +180,7 @@ class PlayerStatWidget(QWidget):
             self.layout_widget.addWidget(self.frame_stats,0,Qt.AlignRight|Qt.AlignVCenter)
             self.layout_widget.addWidget(self.frame_pic_name,0,Qt.AlignLeft|Qt.AlignVCenter)
         else:
-            self.widget_pic = ScaledCircularPicture(game.players[position].pixMap,self.green)
+            self.widget_pic = ScaledCircularPicture(game.players[position].pixMap,self.green,size=60)
             self.layout_stats.addWidget(self.label_score,0,Qt.AlignLeft|Qt.AlignBottom)
             self.layout_stats.addWidget(self.label_dElo,0,Qt.AlignLeft|Qt.AlignTop)
 

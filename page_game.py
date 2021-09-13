@@ -97,10 +97,10 @@ class GamePage(QWidget):
         self.widget_greOff.label_score.setText(f"{self.gc.game.scores[3]}")
 
     def initWidgets(self):
-        self.widget_redDef.widget_pic.setPicture(self.gc.game.players[0].pixMap)
-        self.widget_redOff.widget_pic.setPicture(self.gc.game.players[1].pixMap)
-        self.widget_greDef.widget_pic.setPicture(self.gc.game.players[2].pixMap)
-        self.widget_greOff.widget_pic.setPicture(self.gc.game.players[3].pixMap)
+        self.widget_redDef.widget_pic.setPixmap(self.gc.game.players[0].pixMap)
+        self.widget_redOff.widget_pic.setPixmap(self.gc.game.players[1].pixMap)
+        self.widget_greDef.widget_pic.setPixmap(self.gc.game.players[2].pixMap)
+        self.widget_greOff.widget_pic.setPixmap(self.gc.game.players[3].pixMap)
 
         self.widget_redDef.label_name.setText(self.gc.game.players[0].name)
         self.widget_redOff.label_name.setText(self.gc.game.players[1].name)
@@ -129,12 +129,12 @@ class PlayerScoreWidget(QWidget):
         self.frame_stats = QFrame()
         self.layout_stats = QVBoxLayout(self.frame_stats)
         self.frame_pic_name = QFrame()
-        self.frame_pic_name.setFixedWidth(80)
+        #elf.frame_pic_name.setFixedWidth(80)
         self.layout_pic_name = QVBoxLayout(self.frame_pic_name)
         self.frame_widget = QFrame()
         self.layout_widget = QHBoxLayout(self.frame_widget)
         if self.position < 2 :
-            self.widget_pic = ScaledCircularPicture(self.gc.game.players[self.position].pixMap,self.red)
+            self.widget_pic = ScaledCircularPicture(self.gc.game.players[self.position].pixMap,self.red,size=80)
             self.layout_stats.addWidget(self.label_score,0,Qt.AlignRight|Qt.AlignBottom)
 
             self.layout_pic_name.addWidget(self.widget_pic,0,Qt.AlignHCenter|Qt.AlignBottom)
@@ -146,7 +146,7 @@ class PlayerScoreWidget(QWidget):
                                                 font: 30pt {self.settings['font']['family']};""")        
 
         else:
-            self.widget_pic = ScaledCircularPicture(self.gc.game.players[self.position].pixMap,self.green)
+            self.widget_pic = ScaledCircularPicture(self.gc.game.players[self.position].pixMap,self.green,size=80)
             self.layout_stats.addWidget(self.label_score,0,Qt.AlignLeft|Qt.AlignBottom)
 
             self.layout_pic_name.addWidget(self.widget_pic,0,Qt.AlignHCenter|Qt.AlignBottom)
@@ -159,7 +159,7 @@ class PlayerScoreWidget(QWidget):
                                                 font: 30pt {self.settings['font']['family']};""")
         
 
-        self.setFixedSize(300,120)
+        self.setFixedSize(300,170)
         self.setLayout(self.layout_widget)
     
 #     def updatePlayers(self):
