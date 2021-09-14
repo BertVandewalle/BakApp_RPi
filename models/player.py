@@ -6,9 +6,11 @@ class Player:
     id = ""
     pixMap = QPixmap
 
-    def __init__(self,id,name):
+    def __init__(self,id,name,elo,rank):
         self.name = name
         self.id = id
+        self.elo = elo
+        self.rank = rank
     
    
     @property

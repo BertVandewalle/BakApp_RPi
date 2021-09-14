@@ -240,7 +240,7 @@ class MainApp(QApplication):
         self.stateMachine.start()
       
 # MAIN WINDOW
-# ///////////////////////////////////////////////////////////////
+# ///////////////////////////////////////////////////////////////ß
 class MainWindow(QMainWindow):
 
     def __init__(self,buttonController:ButtonController,app:MainApp,dti:DataInitializer):

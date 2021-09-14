@@ -1,4 +1,5 @@
 import logging
+from ranking_summary import RankingWidget
 import sys
 from data_controller import DataController
 from gui.core.json_themes import Themes
@@ -29,11 +30,17 @@ class HomePage(QWidget):
         # ///////////////////////////////////////////////////////////////
         self.frame_lastGame = QFrame()
         self.layout_lastGame = QHBoxLayout(self.frame_lastGame)
-        self.frame_lastGame.setLayout(self.layout_lastGame)
+        self.frame_lastGame.setContentsMargins(0,0,0,0)
+        self.frame_lastGame.setMaximumHeight(int(self.height()*0.4))
         
         self.frame_bottom = QFrame() 
+        self.frame_bottom.setContentsMargins(0,0,0,0)
         self.layout_bottom = QHBoxLayout(self.frame_bottom)
+        self.layout_bottom.setContentsMargins(0,0,0,0)
         self.frame_ranking = QFrame()
+        self.frame_ranking.setContentsMargins(0,0,0,0)
+        self.frame_ranking.setMaximumWidth(self.width()//2)
+
         self.layout_ranking = QVBoxLayout(self.frame_ranking)
         self.frame_gamesToday = QFrame()
         self.layout_gamesToday = QVBoxLayout(self.frame_gamesToday)
@@ -58,6 +65,11 @@ class HomePage(QWidget):
         self.frame_lastGame.setStyleSheet(f"background: {self.themes['app_color']['bg_three']} ; border-radius: 8")
         #self.frame_lastGame.setMaximumHeight(parent.height()//2)
         self.layout_lastGame.addWidget(self.widget_lastGame)
+
+
+        self.widget_ranking = RankingWidget(self._dti)
+        self.frame_ranking.setStyleSheet(f"background: {self.themes['app_color']['bg_three']} ; border-radius: 8")
+        self.layout_ranking.addWidget(self.widget_ranking)
 
         # ADD ALL TO PAGE LAYOUT
         self.layout_page = QVBoxLayout()

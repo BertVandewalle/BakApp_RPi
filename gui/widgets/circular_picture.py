@@ -51,7 +51,6 @@ class ScaledCircularPicture(QWidget):
         self.repaint()
 
     def paintEvent(self,event):
-        print("scaled pic paintevent")
         p = QPainter()
         p.begin(self)
         p.setRenderHint(QPainter.Antialiasing)

@@ -97,7 +97,7 @@ class PyLastGameWidget(QWidget):
             # CENTRAL SVG WIDGET
             # ///////////////////////////////////////////////////////////////
             self.football_table_widget = FootballTableWidget()
-            self.football_table_widget.setMinimumSize(200,200) 
+            self.football_table_widget.setMinimumSize(150,150) 
 
             # DURATION LABEL
             # ///////////////////////////////////////////////////////////////
@@ -111,17 +111,17 @@ class PyLastGameWidget(QWidget):
 
             # ADD WIDGETS TO RED AND GREEN LAYOUT
             # ///////////////////////////////////////////////////////////////
-            self.layout_red_players.addSpacing(60)
+            self.layout_red_players.addSpacing(40)
             self.redDefWidget = PlayerStatWidget(self._game,0)
             self.layout_red_players.addWidget(self.redDefWidget,0,Qt.AlignRight|Qt.AlignBottom)
-            self.layout_red_players.addSpacing(40)
+            self.layout_red_players.addSpacing(20)
             self.redOffWidget = PlayerStatWidget(self._game,1)
             self.layout_red_players.addWidget(self.redOffWidget,0,Qt.AlignRight|Qt.AlignTop)
 
-            self.layout_gre_players.addSpacing(60)
+            self.layout_gre_players.addSpacing(40)
             self.greDefWidget = PlayerStatWidget(self._game,2)
             self.layout_gre_players.addWidget(self.greDefWidget,0,Qt.AlignLeft|Qt.AlignBottom)
-            self.layout_gre_players.addSpacing(40)
+            self.layout_gre_players.addSpacing(20)
             self.greOffWidget = PlayerStatWidget(self._game,3)
             self.layout_gre_players.addWidget(self.greOffWidget,0,Qt.AlignLeft|Qt.AlignTop)
 
@@ -129,11 +129,13 @@ class PyLastGameWidget(QWidget):
             self.layout_stats.addWidget(self.frame_red_players,1,Qt.AlignRight)
             self.layout_stats.addWidget(self.frame_central,0,Qt.AlignHCenter)
             self.layout_stats.addWidget(self.frame_gre_players,1,Qt.AlignLeft)
+            self.layout_stats.setContentsMargins(0,0,0,0)
 
             # ADD ALL TO WIDGET LAYOUT
             self.widget_layout = QVBoxLayout()
             self.widget_layout.addWidget(self.label_title)
             self.widget_layout.addLayout(self.layout_stats)
+            self.widget_layout.setContentsMargins(0,0,0,0)
             self.setLayout(self.widget_layout)
 
     def FindMaxWidth(self,label1:QLabel,label2:QLabel):
@@ -170,7 +172,7 @@ class PlayerStatWidget(QWidget):
         self.frame_widget = QFrame()
         self.layout_widget = QHBoxLayout(self.frame_widget)
         if position < 2 :
-            self.widget_pic = ScaledCircularPicture(game.players[position].pixMap,self.red,size=60)
+            self.widget_pic = ScaledCircularPicture(game.players[position].pixMap,self.red,size=40)
             self.layout_stats.addWidget(self.label_score,0,Qt.AlignRight|Qt.AlignBottom)
             self.layout_stats.addWidget(self.label_dElo,0,Qt.AlignRight|Qt.AlignTop)
 
@@ -180,7 +182,7 @@ class PlayerStatWidget(QWidget):
             self.layout_widget.addWidget(self.frame_stats,0,Qt.AlignRight|Qt.AlignVCenter)
             self.layout_widget.addWidget(self.frame_pic_name,0,Qt.AlignLeft|Qt.AlignVCenter)
         else:
-            self.widget_pic = ScaledCircularPicture(game.players[position].pixMap,self.green,size=60)
+            self.widget_pic = ScaledCircularPicture(game.players[position].pixMap,self.green,size=40)
             self.layout_stats.addWidget(self.label_score,0,Qt.AlignLeft|Qt.AlignBottom)
             self.layout_stats.addWidget(self.label_dElo,0,Qt.AlignLeft|Qt.AlignTop)
 

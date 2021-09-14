@@ -1,3 +1,5 @@
+import sys
+sys.path.append('../BakApp_RPi')
 from models import *
 from data_controller import DataController
 from PyQt5 import QtCore, QtGui, QtNetwork
@@ -28,8 +30,8 @@ class DataBaseInitializer:
         self.nam = QtNetwork.QNetworkAccessManager()
         self.nam.finished.connect(self.handleResponse)
         self.cafile = requests.certs.where()
-        #self.deleteGames()
-        #self.deletePlayers()
+        self.deleteGames()
+        self.deletePlayers()
         self.postPlayers()
         self.initGames()
         print("finished")
@@ -51,9 +53,11 @@ class DataBaseInitializer:
         for data in reply:
             name = data.get('name')
             id = data.get('id')
-            player = Player(id,name)
+            elo = data.get('elo')
+            rankId = data.get('rankId')
+            player = Player(id,name,elo,rankId)
             self.players.append(player)
-        self.df_sheet_s4 = pd.read_excel('gameHistory.xlsx',sheet_name='Season 4')
+        self.df_sheet_s4 = pd.read_excel('historic_data\\gameHistory.xlsx',sheet_name='Season 4')
         for i in range(33):
             redDefId = [player.id for player in self.players if player.name == self.df_sheet_s4["Rood Verdediging"][i].rstrip()]
             redOffId = [player.id for player in self.players if player.name == self.df_sheet_s4["Rood Aanval"][i].rstrip()]

@@ -10,6 +10,7 @@ import logging
 
 class DataInitializer(QObject):
     playersSetupFinished = pyqtSignal()
+    ranksSetupFinished = pyqtSignal()
     finished = pyqtSignal()
     players = []
     numberOfPlayers = int
@@ -27,9 +28,9 @@ class DataInitializer(QObject):
 
         self.playersSetupFinished.connect(self.dataController.getLastGame)
         self.playersSetupFinished.connect(self.dataController.getDuos)
+        self.ranksSetupFinished.connect(self.dataController.getPlayers)
         self.finished.connect(slot)
 
-        self.dataController.getPlayers()
         self.dataController.getRanks()
         self.settings = settings
 
@@ -38,7 +39,11 @@ class DataInitializer(QObject):
         for data in response:
             name = str(data.get('name'))
             id = str(data.get('id'))
-            player = Player(id,name)
+            elo = str(data.get('elo'))
+            rank_id = str(data.get('rankId'))
+            for rank in self.ranks:
+                if str(rank.id) == str(rank_id): player_rank = rank
+            player = Player(id,name,elo=elo,rank=player_rank)
             player.image = self.settings['player_images'][name]
             pil_img = crop_max_square(Functions.set_image(player.image))
             pil_img.save('test.jpg')
@@ -83,9 +88,12 @@ class DataInitializer(QObject):
             id = str(data.get('id'))
             division = str(data.get('division'))
             subDivision = str(data.get('subDivision'))
-            rank = Rank(id,division,subDivision)
+            lowerbound = int(data.get('lowerBound'))
+            upperbound = int(data.get('upperBound'))
+            rank = Rank(id,division,subDivision,lowerbound,upperbound)
             self.ranks.append(rank)
         self.count += 1
+        self.ranksSetupFinished.emit()
         self.checkIfFinished()
 
     def checkIfFinished(self):
