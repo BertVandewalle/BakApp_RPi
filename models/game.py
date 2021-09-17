@@ -12,7 +12,10 @@ class Game(QObject):
     goals = [Goal]
     scores = [int]
     startDateTime = QDateTime
-    deltaElo = []
+    deltaEloTotal = []
+    deltaEloBase = []
+    deltaEloIndividualBonus = []
+    deltaEloTeamBonus = []
     def __init__(self):
         super().__init__()
         self.id = 0
@@ -22,7 +25,10 @@ class Game(QObject):
         self.duos = []*2
         self.goals = []
         self.scores = [0]*4
-        self.deltaElo = [0]*4
+        self.deltaEloTotal = [0]*4
+        self.deltaEloBase = [0]*4
+        self.deltaEloIndividualBonus = [0]*4
+        self.deltaEloTeamBonus = [0]*4
         self.startDateTime = QDateTime.currentDateTimeUtc()
 
     @property

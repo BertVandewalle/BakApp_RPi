@@ -163,7 +163,7 @@ class PlayerStatWidget(QWidget):
         # scaledPixmap = pixmap.scaled(30,50,Qt.KeepAspectRatio)
         # self.label_pic.setPixmap(scaledPixmap)
         self.label_score = QLabel(text=f"{game.scores[position]} goals")
-        self.label_dElo = QLabel(text=f"{int(game.deltaElo[position])} elo")
+        self.label_dElo = QLabel(text=f"{int(game.deltaEloTotal[position])} elo")
         self.frame_stats = QFrame()
         self.layout_stats = QVBoxLayout(self.frame_stats)
         self.frame_pic_name = QFrame()

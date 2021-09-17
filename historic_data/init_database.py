@@ -24,8 +24,8 @@ class DataBaseInitializer:
                     'Stef D',
                     'Tiemen'
                     ]
-    #API_URL = "https://localhost:44321/api"
-    API_URL = 'https://bakapp.bertvandewalle.com/api'
+    API_URL = "http://localhost:5000/api"
+    #API_URL = 'https://bakapp.bertvandewalle.com/api'
     def __init__(self):    
         self.nam = QtNetwork.QNetworkAccessManager()
         self.nam.finished.connect(self.handleResponse)

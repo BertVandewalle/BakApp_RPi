@@ -48,6 +48,8 @@ class MainApp(QApplication):
             else: 
                 self.fullscreen = 0
         except: self.fullscreen = 0
+        
+        self.main_window = None
 
         # Initialize settings
         settings = Settings()
@@ -66,20 +68,26 @@ class MainApp(QApplication):
        
     def setupUI(self):
         # Initialize gameobject
-        self.gc = GameController(self.dataInitializer)
-        # create main window
-        self.main_window = MainWindow(self.btc,self,self.dataInitializer)
-        if self.fullscreen: self.main_window.showFullScreen()
-        else: self.main_window.show()
+        if self.main_window != None:
+            self.main_window.hide()
+            self.main_window.ui.load_pages.setup()
+            self.main_window.show()
+        else:
+            self.gc = GameController(self.dataInitializer)
+            # create main window
+            self.main_window = MainWindow(self.btc,self,self.dataInitializer)
+            if self.fullscreen: self.main_window.showFullScreen()
+            else: self.main_window.show()
 
-        # create game paused dialog
-        self.game_pause_dialog = GamePauseDialog(self.btc)
-        # create game cancel dialog
-        self.game_cancel_dialog = GameCancelDialog(self.btc)
-        # create game finish dialog
-        self.game_finish_dialog = GameFinishDialog(self.btc)
+            # create game paused dialog
+            self.game_pause_dialog = GamePauseDialog(self.btc)
+            # create game cancel dialog
+            self.game_cancel_dialog = GameCancelDialog(self.btc)
+            # create game finish dialog
+            self.game_finish_dialog = GameFinishDialog(self.btc)
 
         self.initStateMachine()
+
 
 
     def initStateMachine(self):
@@ -117,6 +125,8 @@ class MainApp(QApplication):
         self.state_Game_Saving = QState(self.state_Game)
         self.state_Game_FinishDialog.setInitialState(self.state_Game_FinishDialog_yesSelected)
 
+        self.state_Game_PostGame = QState(self.state_Game)
+
 
 
         self.state_View_Ranking = QState()
@@ -151,7 +161,7 @@ class MainApp(QApplication):
         self.state_Game_FinishDialog_noSelected.addTransition(self.btc.button_6.clicked,self.state_Game_FinishDialog_cancelling)
         self.state_Game_FinishDialog_cancelling.addTransition(self.gc.timer.timeout,self.state_Game_Running)
         
-        self.state_Game_Saving.addTransition(self.gc.timer.timeout,self.state_View_Home)
+        self.state_Game_Saving.addTransition(self.dataInitializer.playersSetupFinished,self.state_View_Home)
 
 
 
@@ -192,7 +202,8 @@ class MainApp(QApplication):
         self.state_Game_Running.entered.connect(self.main_window.ui.load_pages.page_game.widget_timeline.start)
 
 
-        self.state_Game_Running.exited.connect(self.main_window.disconnectPlayerButtons)
+        self.state_Game_Running.exited.connect(self.main_window.disconnectPlayerButtons
+        )
         self.state_Game_Running.exited.connect(lambda: self.btc.button_5.clicked.disconnect(self.main_window.deleteGoal))
         self.state_Game_Running.exited.connect(self.main_window.ui.load_pages.page_game.widget_timeline.pause)
 
@@ -240,7 +251,7 @@ class MainApp(QApplication):
         self.stateMachine.start()
       
 # MAIN WINDOW
-# ///////////////////////////////////////////////////////////////ß
+# ///////////////////////////////////////////////////////////////
 class MainWindow(QMainWindow):
 
     def __init__(self,buttonController:ButtonController,app:MainApp,dti:DataInitializer):

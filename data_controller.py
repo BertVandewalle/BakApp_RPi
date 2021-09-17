@@ -14,6 +14,8 @@ class DataController(QObject):
     getRanksResponse = pyqtSignal(list)
     getDuosResponse = pyqtSignal(list)
     getLastGameResponse = pyqtSignal(list)
+    getGamesTodayResponse = pyqtSignal(list)
+    postGameFinished = pyqtSignal()
 
     def __init__(self):
         super().__init__()
@@ -45,6 +47,8 @@ class DataController(QObject):
                 self.handleGetRanksResponse(output)
             elif str(reply.property("login")) == "getDuos":
                 self.handleGetDuosResponse(output)
+            elif str(reply.property("login")) == "getGamesToday":
+                self.handleGetGamesTodayResponse(output)
         else:
             print(reply.errorString())
 
@@ -65,6 +69,8 @@ class DataController(QObject):
             logging.warning("could not emit getPlayersResponse")
             #print(str(response))
 
+    # Get last Game
+    # ///////////////////////////////////////////////////////////////
     def getLastGame(self):
         self.url = self.apiUrl + "/Game?PageNumber=1&PageSize=1"
         req = QNetworkRequest(QUrl(self.url))
@@ -79,7 +85,24 @@ class DataController(QObject):
         except:
             logging.warning("failed to emit LastGameRespones")
             #print(str(response))
- 
+    
+    # Get today games
+    # ///////////////////////////////////////////////////////////////
+    def getGamesToday(self):
+        self.url = self.apiUrl + "/Game/Today"
+        req = QNetworkRequest(QUrl(self.url))
+        logging.warning("getGamesToday")
+        reply = self.nam.get(req)
+        reply.setProperty("login",QVariant("getGamesToday"))
+
+    def handleGetGamesTodayResponse(self,response):
+        logging.info("handling getGamesTodayResponse")
+        try:
+            self.getGamesTodayResponse.emit(response)
+        except:
+            logging.warning("failed to emit GetGamesTodayRespones")
+            #print(str(response))
+
 
 
     # Get all rank data
@@ -168,5 +191,6 @@ class DataController(QObject):
             goals = self.game.goals
             for goal in goals:
                 self.postGoal(gameId,goal.player.id,str(datetime.timedelta(seconds=goal.time)))
+            self.postGameFinished.emit()
         except:
             print("No valid game to post goals")

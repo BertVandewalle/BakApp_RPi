@@ -1,3 +1,4 @@
+from games_today import GamesTodayWidget
 import logging
 from ranking_summary import RankingWidget
 import sys
@@ -37,13 +38,17 @@ class HomePage(QWidget):
         self.frame_bottom.setContentsMargins(0,0,0,0)
         self.layout_bottom = QHBoxLayout(self.frame_bottom)
         self.layout_bottom.setContentsMargins(0,0,0,0)
+        
         self.frame_ranking = QFrame()
         self.frame_ranking.setContentsMargins(0,0,0,0)
-        self.frame_ranking.setMaximumWidth(self.width()//2)
+        self.frame_ranking.setMinimumWidth(self.width()*0.65)
+        self.frame_ranking.setMaximumWidth(self.width()*0.65)
 
         self.layout_ranking = QVBoxLayout(self.frame_ranking)
+
         self.frame_gamesToday = QFrame()
         self.layout_gamesToday = QVBoxLayout(self.frame_gamesToday)
+        
         self.layout_bottom.addWidget(self.frame_ranking)
         self.layout_bottom.addWidget(self.frame_gamesToday)
 
@@ -66,10 +71,20 @@ class HomePage(QWidget):
         #self.frame_lastGame.setMaximumHeight(parent.height()//2)
         self.layout_lastGame.addWidget(self.widget_lastGame)
 
-
+        # RANKING WIDGET
+        # ///////////////////////////////////////////////////////////////
         self.widget_ranking = RankingWidget(self._dti)
         self.frame_ranking.setStyleSheet(f"background: {self.themes['app_color']['bg_three']} ; border-radius: 8")
         self.layout_ranking.addWidget(self.widget_ranking)
+
+        # GAMES TODAY WIDGET
+        # ///////////////////////////////////////////////////////////////
+        self.widget_gamesToday = GamesTodayWidget()
+        #self.widget_gamesToday.setMinimumSize(300,300)
+        self.frame_gamesToday.setStyleSheet(f"background: {self.themes['app_color']['bg_three']} ; border-radius: 8")
+        self.layout_gamesToday.addWidget(self.widget_gamesToday)
+        for game in self._dti.gamesToday:
+            self.widget_gamesToday.addGame(game)
 
         # ADD ALL TO PAGE LAYOUT
         self.layout_page = QVBoxLayout()

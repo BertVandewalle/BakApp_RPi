@@ -104,4 +104,4 @@ class GameController(QObject):
     def endGame(self):
         self.pause()
         self.reset()
-        self.game = Game()
+        #self.game = Game()

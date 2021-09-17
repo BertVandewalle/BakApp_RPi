@@ -11,8 +11,6 @@ from data_initializer import DataInitializer
 from game_controller import GameController
 
 from qt_core import *
-import pyqtgraph as pg
-import numpy as np
 
 class Ranking(QWidget):
     def __init__(self,dti:DataInitializer,parent):
@@ -61,6 +59,8 @@ class Ranking(QWidget):
         # p.setOpacity(1)
         pen = QPen(QColor("white"))
         p.setPen(pen)
+        font = QFont(self.settings['font']['family'])
+        
         for rank in self.dti.ranks:
             x0 = round(min_length + float(rank.lowerbound-min_elo)/(max_elo-min_elo) * (max_length-min_length))
             x1 = round(min_length + float(rank.upperbound-min_elo)/(max_elo-min_elo) * (max_length-min_length))
@@ -68,7 +68,8 @@ class Ranking(QWidget):
                 p.drawLine(x0,0,x0,self.height())
                 rect = QRect(x0,self.height()-rank_label_height,x1-x0,rank_label_height)
                 p.drawText(rect,Qt.AlignCenter,f"{rank.division}\n{rank.subDivision}")
-
+        font.setBold(True)
+        p.setFont(font)
         for i in range(self.player_amount):
             elo = round(float(self.players_ranked[i].elo))
             atop = i*(width+spacing)
@@ -76,6 +77,7 @@ class Ranking(QWidget):
             rect = QRect(0,atop,length,width)
             p.setBrush(QColor(self.themes['app_color'][self.players_ranked[i].rank.division]))
             p.drawRoundedRect(rect, 2, 2)
+            
             p.drawText(QRect(5,atop,length,width), Qt.AlignLeft|Qt.AlignVCenter, f"{self.players_ranked[i].name}")
             p.drawText(QRect(5,atop,length-10,width), Qt.AlignRight|Qt.AlignVCenter, f"{elo}")
         
@@ -111,6 +113,7 @@ class RankingWidget(QWidget):
         self._layout = QVBoxLayout(self)
         self._layout.addWidget(self.label_title,0,Qt.AlignVCenter|Qt.AlignLeft)
         self._layout.addWidget(self.frame_ranking,1)
+        
         #self._layout.setContentsMargins(0,0,0,0)
         
         

@@ -11,10 +11,19 @@ class MainPages(QStackedWidget):
         super().__init__()
         self._parent = parent
         self._dti = dti
+        self.gc = gc
+        self.setup()
 
+    def setup(self):
+        try:
+            self.removeWidget(self.page_home)
+            self.removeWidget(self.page_playerSelection)
+            self.removeWidget(self.page_game)
+            self.removeWidget(self.page_ranking)
+        except: pass
         self.page_home = HomePage(self._dti)
         self.page_playerSelection = PyPlayerSelectionWidget(self._dti.players)
-        self.page_game = GamePage(gc)
+        self.page_game = GamePage(self.gc)
         self.page_ranking = QWidget()
 
         # ADD WIDGETS TO STACK

@@ -7,10 +7,12 @@ from qt_core import *
 
 
 class SVGWidget(QWidget):
-    def __init__(self,image_name:str,color:str):
+    def __init__(self,parent=None,image_name:str="icon_home",color:str="white",width=15,height=15):
         QWidget.__init__(self)
+        if parent != None: self.setParent(parent)
         self.image_path = Functions.set_svg_icon(image_name)
         self.image = QPixmap(self.image_path)
+        self.setFixedSize(width,height)
         self.scaledPix = self.image.scaled(self.size(), Qt.KeepAspectRatio, transformMode = Qt.SmoothTransformation)
         self.color = QColor(color)
 
@@ -21,17 +23,21 @@ class SVGWidget(QWidget):
         rect = QRect(0,0,self.width(),self.height())
         painter = QPainter(self.image)
         painter.setRenderHint(QPainter.Antialiasing)
+        self.scaledPix = self.image.scaled(self.size(), Qt.KeepAspectRatio, transformMode = Qt.SmoothTransformation)
 
         painter.setCompositionMode(QPainter.CompositionMode_SourceIn)
         painter.fillRect(self.image.rect(),self.color)
 
-        self.scaledPix = self.image.scaled(self.size(), Qt.KeepAspectRatio, transformMode = Qt.SmoothTransformation)
         p.drawPixmap(
-                    int((self.width()-self.scaledPix.width())/2),
-                    int((self.height()-self.scaledPix.height())/2),
+                    round((self.width()-self.scaledPix.width())/2),
+                    round((self.height()-self.scaledPix.height())/2),
                     self.scaledPix)
         painter.end() 
         p.end()
+    
+    def updateSize(self,width,height):
+        self.setFixedSize(width,height)
+        self.repaint()
 
 
 # APPLICATION TO TEST WIDGET
@@ -43,7 +49,7 @@ class _MainApp(QApplication):
         
 
     def initUI(self):
-        self.button = SVGWidget("icon_home","blue")
+        self.button = SVGWidget("icon_team","blue",100,100)
         self.button.show()
         
 

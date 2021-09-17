@@ -17,6 +17,7 @@ class DataInitializer(QObject):
     ranks = []
     duos = []
     lastGame = Game
+    gamesToday = [Game]
     def __init__(self,dataController:DataController,settings,slot):
         super().__init__()
         self.count = 0
@@ -25,17 +26,24 @@ class DataInitializer(QObject):
         self.dataController.getLastGameResponse.connect(lambda e: self.addLastGame(e))
         self.dataController.getRanksResponse.connect(lambda e: self.addRanks(e))
         self.dataController.getDuosResponse.connect(lambda e: self.addDuos(e))
+        self.dataController.getGamesTodayResponse.connect(lambda e: self.addGamesToday(e))
+        self.dataController.postGameFinished.connect(self.updateModels)
+
+
+        self.ranksSetupFinished.connect(self.dataController.getPlayers)
 
         self.playersSetupFinished.connect(self.dataController.getLastGame)
         self.playersSetupFinished.connect(self.dataController.getDuos)
-        self.ranksSetupFinished.connect(self.dataController.getPlayers)
+        self.playersSetupFinished.connect(self.dataController.getGamesToday)
+
         self.finished.connect(slot)
 
-        self.dataController.getRanks()
+        self.updateModels()
         self.settings = settings
 
     def addPlayers(self,response):
         logging.warning("received playerResponse")
+        self.players = []
         for data in response:
             name = str(data.get('name'))
             id = str(data.get('id'))
@@ -72,15 +80,64 @@ class DataInitializer(QObject):
 
         self.lastGame.duration = game.get('duration')
         self.lastGame.startDateTime = game.get('startDateTime')
-        self.lastGame.deltaElo = [game.get('redDefDeltaElo'),
+        self.lastGame.deltaEloTotal = [game.get('redDefDeltaElo'),
                                 game.get('redOffDeltaElo'),
                                 game.get('greDefDeltaElo'),
-                                game.get('greOffDeltaElo'),]
+                                game.get('greOffDeltaElo')]
+        self.lastGame.deltaEloBase = [game.get('eloRedDefBase'),
+                                game.get('eloRedOffBase'),
+                                game.get('eloGreDefBase'),
+                                game.get('eloGreOffBase')]
+
+        self.lastGame.deltaEloIndividualBonus = [game.get('eloRedDefBonus'),
+                                game.get('eloRedOffBonus'),
+                                game.get('eloGreDefBonus'),
+                                game.get('eloGreOffBonus')]
+        self.lastGame.deltaEloTeamBonus = [game.get('eloRedTeamBonus'),
+                                game.get('eloRedTeamBonus'),
+                                game.get('eloGreTeamBonus'),
+                                game.get('eloGreTeamBonus')]
 
         self.count += 1
-        print(self.lastGame.scores)
         self.checkIfFinished()    
-        
+    
+    def addGamesToday(self,response):
+        logging.warning("add GamesToday")
+        self.gamesToday = []
+        for data in response:
+            game = Game()
+            game.players = [self.findPlayerFromId(players=self.players,id=data.get('redDefId')),
+                                self.findPlayerFromId(players=self.players,id=data.get('redOffId')),
+                                self.findPlayerFromId(players=self.players,id=data.get('greDefId')),
+                                self.findPlayerFromId(players=self.players,id=data.get('greOffId'))]
+            game.scores = [data.get('redDefScore'),
+                                    data.get('redOffScore'),
+                                    data.get('greDefScore'),
+                                    data.get('greOffScore')]
+
+            game.duration = data.get('duration')
+            game.startDateTime = data.get('startDateTime')
+            game.deltaEloTotal = [data.get('redDefDeltaElo'),
+                                data.get('redOffDeltaElo'),
+                                data.get('greDefDeltaElo'),
+                                data.get('greOffDeltaElo')]
+            game.deltaEloBase = [data.get('eloRedDefBase'),
+                                data.get('eloRedOffBase'),
+                                data.get('eloGreDefBase'),
+                                data.get('eloGreOffBase')]
+
+            game.deltaEloIndividualBonus = [data.get('eloRedDefBonus'),
+                                data.get('eloRedOffBonus'),
+                                data.get('eloGreDefBonus'),
+                                data.get('eloGreOffBonus')]
+            game.deltaEloTeamBonus = [data.get('eloRedTeamBonus'),
+                                data.get('eloRedTeamBonus'),
+                                data.get('eloGreTeamBonus'),
+                                data.get('eloGreTeamBonus')]
+            self.gamesToday.append(game)
+
+        self.count += 1
+        self.checkIfFinished()
 
     def addRanks(self,response):
         logging.warning("adding ranks")
@@ -97,8 +154,9 @@ class DataInitializer(QObject):
         self.checkIfFinished()
 
     def checkIfFinished(self):
-        logging.warning("setup finished")
-        if self.count == 4:
+        if self.count == 5:
+            logging.warning("setup finished")
+
             self.finished.emit()
 
     def findPlayerFromId(self, players=None, id:str=None):
@@ -108,6 +166,7 @@ class DataInitializer(QObject):
 
     def addDuos(self,response):
         logging.warning("adding duos")
+        self.duos =[]
         for data in response:
             def_player_id = data.get('defPlayerId')
             def_player = self.findPlayerFromId(self.players,def_player_id)
@@ -119,3 +178,8 @@ class DataInitializer(QObject):
             self.duos.append(duo)
         self.count += 1
         self.checkIfFinished()
+
+    def updateModels(self):
+        self.count = 0
+        self.dataController.getRanks()
+

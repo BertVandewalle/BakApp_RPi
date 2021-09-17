@@ -23,7 +23,7 @@ class ButtonWithIcon(QWidget):
         self.layout_bg = QHBoxLayout(self.bg)
         self.layout_bg.setContentsMargins(-10,0,-10,0)
         
-        self.icon = SVGWidget(self.icon_name,self.color_text)
+        self.icon = SVGWidget(None,self.icon_name,self.color_text)
 
         self.icon.setMinimumSize(20,20)
         
