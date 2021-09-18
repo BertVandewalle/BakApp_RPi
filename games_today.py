@@ -53,6 +53,7 @@ class GameToday(QWidget):
         self._layout.setContentsMargins(0,0,0,0)
 
         startDateTime = QDateTime.fromString(self.game.startDateTime,"yyyy-MM-ddThh:mm:ss")
+        startDateTime = startDateTime.toLocalTime()
         self.label_time = QLabel(text=startDateTime.time().toString("hh:mm"))
         
         self.frame_red_names = QFrame()

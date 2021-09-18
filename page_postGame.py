@@ -193,6 +193,7 @@ class PlayerStatsWidget(QWidget):
 class PostGamePage(QWidget):
     def __init__(self,dti:DataInitializer):
         super().__init__()
+        self.dti=dti
         # LOAD SETTINGS
         # ///////////////////////////////////////////////////////////////
         settings = Settings()
@@ -202,7 +203,8 @@ class PostGamePage(QWidget):
         # ///////////////////////////////////////////////////////////////
         themes = Themes()
         self.themes = themes.items
-
+        
+    def setup(self):
         self._layout = QHBoxLayout(self)
 
         self.frame_red = QFrame()
@@ -211,10 +213,10 @@ class PostGamePage(QWidget):
         self.frame_gre = QFrame()
         self.layout_gre = QVBoxLayout(self.frame_gre)
 
-        self.widget_redDef = PlayerStatsWidget(dti.lastGame.players[0],0,dti.lastGame)
-        self.widget_redOff = PlayerStatsWidget(dti.lastGame.players[1],1,dti.lastGame)
-        self.widget_greDef = PlayerStatsWidget(dti.lastGame.players[2],2,dti.lastGame)
-        self.widget_greOff = PlayerStatsWidget(dti.lastGame.players[3],3,dti.lastGame)
+        self.widget_redDef = PlayerStatsWidget(self.dti.lastGame.players[0],0,self.dti.lastGame)
+        self.widget_redOff = PlayerStatsWidget(self.dti.lastGame.players[1],1,self.dti.lastGame)
+        self.widget_greDef = PlayerStatsWidget(self.dti.lastGame.players[2],2,self.dti.lastGame)
+        self.widget_greOff = PlayerStatsWidget(self.dti.lastGame.players[3],3,self.dti.lastGame)
 
         self.layout_red.addWidget(self.widget_redDef)
         self.layout_red.addWidget(self.widget_redOff)
@@ -238,6 +240,7 @@ class _MainApp(QApplication):
         #self.widget = DeltaEloDivsionWidget(-100,+10,-5)
         # self.widget = PlayerStatsWidget(self.dti.lastGame.players[0],0,self.dti.lastGame)
         self.widget = PostGamePage(self.dti)
+        self.widget.setup()
         self.widget.show() 
 
 

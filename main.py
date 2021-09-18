@@ -173,8 +173,8 @@ class MainApp(QApplication):
         self.state_Game_FinishDialog_noSelected.addTransition(self.btc.button_6.clicked,self.state_Game_FinishDialog_cancelling)
         self.state_Game_FinishDialog_cancelling.addTransition(self.gc.timer.timeout,self.state_Game_Running)
         
-        self.state_Game_Saving.addTransition(self.dataInitializer.playersSetupFinished,self.state_View_Home)
-
+        self.state_Game_Saving.addTransition(self.dataInitializer.updateFinished.clicked,self.state_Game_PostGame)
+        self.state_Game_PostGame.addTransition(self.btc.button_7.clicked,self.state_View_Home)
 
 
 
@@ -250,6 +250,9 @@ class MainApp(QApplication):
         self.state_View_Ranking.entered.connect(lambda: self.main_window.ui.bottom_menu.select_only_one("btn_add_user")) 
         self.state_View_Ranking.entered.connect(lambda: MainFunctions.set_page(self.main_window, self.main_window.ui.load_pages.page_ranking))
 
+        self.state_Game_PostGame.entered.connect(self.main_window.ui.load_pages.page_postgame.setup)
+        self.state_Game_PostGame.entered.connect(lambda: MainFunctions.set_page(self.main_window, self.main_window.ui.load_pages.page_postgame))
+        self.state_Game_PostGame.exited.connect(self.dataInitializer.playersSetupFinished.emit)
         # Add States to StateMachine
         self.stateMachine.addState(self.state_View_Home)
         self.stateMachine.addState(self.state_View_PlayerSelection)

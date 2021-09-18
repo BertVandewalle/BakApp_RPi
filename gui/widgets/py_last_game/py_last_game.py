@@ -122,11 +122,11 @@ class PyLastGameWidget(QWidget):
             self.layout_red_players.addWidget(self.redOffWidget,0,Qt.AlignRight|Qt.AlignTop)
 
             self.layout_gre_players.addSpacing(40)
-            self.greDefWidget = PlayerStatWidget(self._game,2)
-            self.layout_gre_players.addWidget(self.greDefWidget,0,Qt.AlignLeft|Qt.AlignBottom)
-            self.layout_gre_players.addSpacing(20)
             self.greOffWidget = PlayerStatWidget(self._game,3)
-            self.layout_gre_players.addWidget(self.greOffWidget,0,Qt.AlignLeft|Qt.AlignTop)
+            self.layout_gre_players.addWidget(self.greOffWidget,0,Qt.AlignLeft|Qt.AlignBottom)
+            self.layout_gre_players.addSpacing(20)
+            self.greDefWidget = PlayerStatWidget(self._game,2)
+            self.layout_gre_players.addWidget(self.greDefWidget,0,Qt.AlignLeft|Qt.AlignTop)
 
             # ADD WIDGETS TO STAT LAYOUT            
             self.layout_stats.addWidget(self.frame_red_players,1,Qt.AlignRight)

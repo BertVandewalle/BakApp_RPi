@@ -38,8 +38,10 @@ class DataInitializer(QObject):
 
         self.finished.connect(slot)
 
-        self.updateModels()
+        self.initModels()
         self.settings = settings
+        self.widget = QWidget()
+        self.updateFinished = QPushButton(self.widget)
 
     def addPlayers(self,response):
         logging.warning("received playerResponse")
@@ -158,6 +160,9 @@ class DataInitializer(QObject):
             logging.warning("setup finished")
 
             self.finished.emit()
+        if self.count==2*5:
+            logging.warning("update finished")
+            self.updateFinished.clicked.emit()
 
     def findPlayerFromId(self, players=None, id:str=None):
             for p in players: 
@@ -180,6 +185,10 @@ class DataInitializer(QObject):
         self.checkIfFinished()
 
     def updateModels(self):
+        self.count = 5
+        self.dataController.getRanks()
+
+    def initModels(self):
         self.count = 0
         self.dataController.getRanks()
 

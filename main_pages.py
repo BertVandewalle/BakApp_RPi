@@ -1,3 +1,4 @@
+from page_postGame import PostGamePage
 from page_game import GamePage
 from game_controller import GameController
 from models.game import Game
@@ -22,9 +23,12 @@ class MainPages(QStackedWidget):
             self.removeWidget(self.page_ranking)
         except: pass
         self.page_home = HomePage(self._dti)
+        self.page_home.setStyleSheet("color:white")
         self.page_playerSelection = PyPlayerSelectionWidget(self._dti.players)
         self.page_game = GamePage(self.gc)
         self.page_ranking = QWidget()
+        self.page_postgame = PostGamePage(self._dti)
+        self.page_postgame.setStyleSheet("color:white")
 
         # ADD WIDGETS TO STACK
         # ///////////////////////////////////////////////////////////////
@@ -32,4 +36,5 @@ class MainPages(QStackedWidget):
         self.addWidget(self.page_playerSelection)
         self.addWidget(self.page_game)
         self.addWidget(self.page_ranking)
+        self.addWidget(self.page_postgame)
         
