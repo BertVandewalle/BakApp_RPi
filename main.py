@@ -53,7 +53,8 @@ class MainApp(QApplication):
             self.fullscreen = 0
             os.environ["QT_FONT_DPI"] = "96"
  
-
+        self.loading = Loading()
+        self.loading.show()
         self.main_window = None
 
         # Initialize settings
@@ -73,6 +74,7 @@ class MainApp(QApplication):
        
     def setupUI(self):
         # Initialize gameobject
+        self.loading.close()
         if self.main_window != None:
             self.main_window.hide()
             self.main_window.ui.load_pages.setup()
@@ -439,6 +441,13 @@ class GameFinishDialog(QDialog):
 
     def keyPressEvent(self,event):
         keyPressEventHandler(self.btc,event)
+
+class Loading(QWidget):
+    def __init__(self):
+        super().__init__()
+        self._layout = QVBoxLayout(self)
+        self.label_loading = QLabel(text="Loading")
+        self._layout.addWidget(self.label_loading)
                 
 
 
