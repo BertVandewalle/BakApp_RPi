@@ -34,7 +34,6 @@ from gui.widgets import *
 
 # ADJUST QT FONT DPI FOR HIGHT SCALE
 # ///////////////////////////////////////////////////////////////
-os.environ["QT_FONT_DPI"] = "96"
 
 
 # MAIN APPLICATION 
@@ -45,11 +44,16 @@ class MainApp(QApplication):
         self.setAttribute(Qt.AA_DisableHighDpiScaling)
         try: 
             if str(argv[1]) == "f":
+                os.environ["QT_FONT_DPI"] = "64"
                 self.fullscreen = 1
-            else: 
+            else:
+                os.environ["QT_FONT_DPI"] = "96"
                 self.fullscreen = 0
-        except: self.fullscreen = 0
-        
+        except: 
+            self.fullscreen = 0
+            os.environ["QT_FONT_DPI"] = "96"
+ 
+
         self.main_window = None
 
         # Initialize settings
