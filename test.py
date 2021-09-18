@@ -1,10 +1,10 @@
 
 import sys
-from gui.widgets.timeline import TimeLineGoal
-from game_controller import GameController
-from gui.core.json_settings import Settings
-from data_controller import DataController
-from data_initializer import DataInitializer
+# from gui.widgets.timeline import TimeLineGoal
+# from game_controller import GameController
+# from gui.core.json_settings import Settings
+# from data_controller import DataController
+# from data_initializer import DataInitializer
 from qt_core import *
 
 
@@ -18,7 +18,6 @@ class testWidget(QWidget):
 # APPLICATION TO TEST WIDGET
 # ///////////////////////////////////////////////////////////////
 class _MainApp(QApplication):
-    dti = DataInitializer
     def __init__(self, argv):
         super().__init__(argv)
         self.initUI()
