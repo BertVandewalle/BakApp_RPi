@@ -252,7 +252,7 @@ class MainApp(QApplication):
 
         self.state_Game_PostGame.entered.connect(self.main_window.ui.load_pages.page_postgame.setup)
         self.state_Game_PostGame.entered.connect(lambda: MainFunctions.set_page(self.main_window, self.main_window.ui.load_pages.page_postgame))
-        self.state_Game_PostGame.exited.connect(self.dataInitializer.playersSetupFinished.emit)
+        self.state_Game_PostGame.exited.connect(self.dataInitializer.finished.emit)
         # Add States to StateMachine
         self.stateMachine.addState(self.state_View_Home)
         self.stateMachine.addState(self.state_View_PlayerSelection)
