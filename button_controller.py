@@ -13,9 +13,17 @@ class ButtonController(QWidget):
         self.button_7 = QPushButton(self.app)
 
         self.serial = QtSerialPort.QSerialPort(
-            'COM2',
+            '/dev/ttyUSB0',
             baudRate=QtSerialPort.QSerialPort.Baud9600,
             readyRead=self.receiveButton)
+#         try:
+#     ser = serial.Serial('/dev/ttyUSB0',9600)
+# except:
+#     try:
+#         ser = serial.Serial('/dev/ttyUSB1',9600)
+#     except:
+#         pass
+
         if not self.serial.isOpen():
             self.serial.open(QIODevice.ReadWrite)  
 
