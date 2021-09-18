@@ -1,9 +1,15 @@
 # IMPORT PACKAGES AND MODULES
 # ///////////////////////////////////////////////////////////////
+import os
+import sys
+real_path = os.path.realpath(__file__)
+path = os.path.dirname(real_path)
+os.chdir(path)
+#sys.path.append('../BakApp_RPI')
+print(os.getcwd())
 from key_functions import keyPressEventHandler
 from stat_calculations import calculate_winchance_red
 import sys
-import os
 from gui import widgets
 #from player_selection import PlayerSelection
 from data_controller import DataController
@@ -41,7 +47,6 @@ from gui.widgets import *
 class MainApp(QApplication):
     def __init__(self, argv):
         super().__init__(argv)
-        self.setAttribute(Qt.AA_DisableHighDpiScaling)
         try: 
             if str(argv[1]) == "f":
                 os.environ["QT_FONT_DPI"] = "64"
@@ -452,11 +457,19 @@ class Loading(QWidget):
 
 
 if __name__ == "__main__":
+    print("setting path")
+    real_path = os.path.realpath(__file__)
+    os.chdir(os.path.dirname(real_path))
     argv = sys.argv
     if argv != None:
         if len(argv) > 1:
             if argv[1] == "f":
                 os.environ["QT_FONT_DPI"] = "64"
+    
+    print(os.getcwd())
+    app = QApplication
+    app.setAttribute(Qt.AA_DisableHighDpiScaling)
 
     app = MainApp(sys.argv)
+
     sys.exit(app.exec_())
