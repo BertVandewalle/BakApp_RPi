@@ -15,7 +15,8 @@
         "title_size" : 10,
         "text_size" : 9
     },
-    "apiURL": "https://localhost:44321/api",
+    "apiURL": "https://bakapp.bertvandewalle.com/api",
+    "apiURL_local": "http://localhost:5000/api",
     "player_images" : { 
         "Bert" : "Bert.jpg",
         "Guest" : "Guest.JPG",

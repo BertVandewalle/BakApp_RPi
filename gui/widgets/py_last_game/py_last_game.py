@@ -43,7 +43,10 @@ class PyLastGameWidget(QWidget):
             self._red = self.themes['app_color']['red']
             self._green = self.themes['app_color']['green']
 
-            self.setStyleSheet(f"background: {self.themes['app_color']['bg_three']} ; border-radius: 8")
+            self.setStyleSheet(f"""background: {self.themes['app_color']['bg_three']} ; 
+                                border-radius: 8;
+                                font = {self.settings['font']['text size']}
+                                """)
 
 
             # TITLE LABEL
