@@ -45,7 +45,7 @@ class PyLastGameWidget(QWidget):
 
             self.setStyleSheet(f"""background: {self.themes['app_color']['bg_three']} ; 
                                 border-radius: 8;
-                                font = {self.settings['font']['text size']}
+                                font = {self.settings['font']['text_size']}
                                 """)
 
 
