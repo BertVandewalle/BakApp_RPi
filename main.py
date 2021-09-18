@@ -443,5 +443,11 @@ class GameFinishDialog(QDialog):
 
 
 if __name__ == "__main__":
+    argv = sys.argv
+    if argv != None:
+        if len(argv) > 1:
+            if argv[1] == "f":
+                os.environ["QT_FONT_DPI"] = "64"
+
     app = MainApp(sys.argv)
     sys.exit(app.exec_())
