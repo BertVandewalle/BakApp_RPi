@@ -21,6 +21,7 @@ class MainPages(QStackedWidget):
             self.removeWidget(self.page_playerSelection)
             self.removeWidget(self.page_game)
             self.removeWidget(self.page_ranking)
+            self.removeWidget(self.page_postgame)
         except: pass
         self.page_home = HomePage(self._dti)
         self.page_home.setStyleSheet("color:white")

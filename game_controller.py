@@ -105,3 +105,6 @@ class GameController(QObject):
         self.pause()
         self.reset()
         #self.game = Game()
+    def initGame(self):
+        self.initPlayers()
+        self.game.goals = []

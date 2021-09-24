@@ -98,7 +98,7 @@ class MainApp(QApplication):
             # create game finish dialog
             self.game_finish_dialog = GameFinishDialog(self.btc)
 
-        self.initStateMachine()
+            self.initStateMachine()
 
 
 
@@ -202,6 +202,7 @@ class MainApp(QApplication):
 
         self.state_Game.entered.connect(lambda: MainFunctions.set_page(self.main_window, self.main_window.ui.load_pages.page_game))
         self.state_Game.entered.connect(self.main_window.startNewGame)
+        self.state_Game.entered.connect(self.gc.initGame)
         self.state_Game.entered.connect(self.main_window.ui.load_pages.page_game.updateScores)
         self.state_Game.entered.connect(self.main_window.ui.bottom_menu.hide)
         self.state_Game.entered.connect(self.main_window.ui.load_pages.page_game.initWidgets)
