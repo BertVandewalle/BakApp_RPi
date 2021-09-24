@@ -107,4 +107,5 @@ class GameController(QObject):
         #self.game = Game()
     def initGame(self):
         self.initPlayers()
-        self.game.goals = []
+        self.game.__init__()
+        self.initPlayers()

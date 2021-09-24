@@ -84,6 +84,7 @@ class MainApp(QApplication):
             self.main_window.hide()
             self.main_window.ui.load_pages.setup()
             self.main_window.show()
+            self.stateMachine.deleteLater()
         else:
             self.gc = GameController(self.dataInitializer)
             # create main window
@@ -98,7 +99,7 @@ class MainApp(QApplication):
             # create game finish dialog
             self.game_finish_dialog = GameFinishDialog(self.btc)
 
-            self.initStateMachine()
+        self.initStateMachine()
 
 
 
@@ -182,7 +183,7 @@ class MainApp(QApplication):
         self.state_View_Home.entered.connect(lambda: self.main_window.ui.bottom_menu.select_only_one("btn_home")) 
         self.state_View_Home.entered.connect(lambda: MainFunctions.set_page(self.main_window, self.main_window.ui.load_pages.page_home)) 
         
-        self.state_Enter_PlayerSelection.entered.connect(self.gc.initGame)
+        #self.state_Enter_PlayerSelection.entered.connect(self.gc.initGame)
         self.state_View_PlayerSelection.entered.connect(lambda: print("enter playerselection view"))
         self.state_View_PlayerSelection.entered.connect(lambda: self.main_window.ui.bottom_menu.select_only_one("btn_widgets")) 
         self.state_View_PlayerSelection.entered.connect(lambda: MainFunctions.set_page(self.main_window, self.main_window.ui.load_pages.page_playerSelection))
@@ -254,6 +255,7 @@ class MainApp(QApplication):
         self.state_Game_PostGame.entered.connect(self.main_window.ui.load_pages.page_postgame.setup)
         self.state_Game_PostGame.entered.connect(lambda: MainFunctions.set_page(self.main_window, self.main_window.ui.load_pages.page_postgame))
         self.state_Game_PostGame.exited.connect(self.dataInitializer.finished.emit)
+        self.state_Game_PostGame.exited.connect(self.gc.initGame)
         # Add States to StateMachine
         self.stateMachine.addState(self.state_View_Home)
         self.stateMachine.addState(self.state_View_PlayerSelection)
