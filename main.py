@@ -182,6 +182,7 @@ class MainApp(QApplication):
         self.state_View_Home.entered.connect(lambda: self.main_window.ui.bottom_menu.select_only_one("btn_home")) 
         self.state_View_Home.entered.connect(lambda: MainFunctions.set_page(self.main_window, self.main_window.ui.load_pages.page_home)) 
         
+        self.state_Enter_PlayerSelection.entered.connect(self.gc.initGame)
         self.state_View_PlayerSelection.entered.connect(lambda: print("enter playerselection view"))
         self.state_View_PlayerSelection.entered.connect(lambda: self.main_window.ui.bottom_menu.select_only_one("btn_widgets")) 
         self.state_View_PlayerSelection.entered.connect(lambda: MainFunctions.set_page(self.main_window, self.main_window.ui.load_pages.page_playerSelection))
@@ -202,7 +203,6 @@ class MainApp(QApplication):
 
         self.state_Game.entered.connect(lambda: MainFunctions.set_page(self.main_window, self.main_window.ui.load_pages.page_game))
         self.state_Game.entered.connect(self.main_window.startNewGame)
-        self.state_Game.entered.connect(self.gc.initGame)
         self.state_Game.entered.connect(self.main_window.ui.load_pages.page_game.updateScores)
         self.state_Game.entered.connect(self.main_window.ui.bottom_menu.hide)
         self.state_Game.entered.connect(self.main_window.ui.load_pages.page_game.initWidgets)
