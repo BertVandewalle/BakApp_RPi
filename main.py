@@ -2,6 +2,7 @@
 # ///////////////////////////////////////////////////////////////
 import os
 import sys
+from goal_controller import GoalController
 real_path = os.path.realpath(__file__)
 path = os.path.dirname(real_path)
 os.chdir(path)
@@ -72,6 +73,8 @@ class MainApp(QApplication):
         # Initialize buttoncontroller
         self.btc = ButtonController()
 
+        self.gtc = GoalController()
+
         # Initialize data
         self.dataInitializer = DataInitializer(self.dataController,self.settings,self.setupUI)
 
@@ -122,6 +125,11 @@ class MainApp(QApplication):
         self.state_Game_Paused = QState(self.state_Game)
         self.state_Game.setInitialState(self.state_Game_Running)
 
+        self.state_Game_Running_NoGoal = QState(self.state_Game_Running)
+        self.state_Game_Running_Goal = QState(self.state_Game_Running)
+        self.state_Game_Running.setInitialState(self.state_Game_Running_NoGoal)
+
+
         self.state_Game_Paused_UnPauseSelected = QState(self.state_Game_Paused)
         self.state_Game_Paused_CancelSelected = QState(self.state_Game_Paused)
         self.state_Game_Paused_CancelDialog = QState(self.state_Game_Paused)
@@ -157,6 +165,13 @@ class MainApp(QApplication):
 
 
         self.state_Game_Running.addTransition(self.btc.button_6.clicked,self.state_Game_Paused)
+        self.state_Game_Running_NoGoal.addTransition(self.gtc.goalScored.clicked,self.state_Game_Running_Goal)
+
+        self.state_Game_Running_Goal.addTransition(self.btc.button_1.clicked,self.state_Game_Running_NoGoal)
+        self.state_Game_Running_Goal.addTransition(self.btc.button_2.clicked,self.state_Game_Running_NoGoal)
+        self.state_Game_Running_Goal.addTransition(self.btc.button_3.clicked,self.state_Game_Running_NoGoal)
+        self.state_Game_Running_Goal.addTransition(self.btc.button_4.clicked,self.state_Game_Running_NoGoal)
+
         self.state_Game_Paused_UnPauseSelected.addTransition(self.btc.button_6.clicked,self.state_Game_Running)
         self.state_Game_Paused_UnPauseSelected.addTransition(self.btc.button_7.clicked,self.state_Game_Paused_CancelSelected)
         self.state_Game_Paused_CancelSelected.addTransition(self.btc.button_5.clicked,self.state_Game_Paused_UnPauseSelected)
@@ -214,13 +229,23 @@ class MainApp(QApplication):
         self.state_Game_Running.entered.connect(self.main_window.initGameButtonConnections)
         self.state_Game_Running.entered.connect(self.gc.start)
         self.state_Game_Running.entered.connect(self.main_window.ui.load_pages.page_game.widget_timeline.start)
+        self.state_Game_Running.entered.connect(lambda: print('entering running game\n'))
 
 
-        self.state_Game_Running.exited.connect(self.main_window.disconnectPlayerButtons
-        )
+        self.state_Game_Running.exited.connect(self.main_window.disconnectPlayerButtons)
         self.state_Game_Running.exited.connect(lambda: self.btc.button_5.clicked.disconnect(self.main_window.deleteGoal))
         self.state_Game_Running.exited.connect(self.main_window.ui.load_pages.page_game.widget_timeline.pause)
 
+        self.state_Game_Running_NoGoal.entered.connect(lambda: print('entering nogoal page\n'))        
+
+
+        self.state_Game_Running_Goal.entered.connect(lambda: self.main_window.ui.load_pages.page_goal.updateGoal(self.gtc.teamColor,self.gtc.v,self.gtc.theta,self.gtc.ypos))
+        self.state_Game_Running_Goal.entered.connect(lambda: MainFunctions.set_page(self.main_window, self.main_window.ui.load_pages.page_goal))
+        self.state_Game_Running_Goal.entered.connect(lambda: print('entering goal page\n'))        
+
+        self.state_Game_Running_Goal.exited.connect(lambda: MainFunctions.set_page(self.main_window, self.main_window.ui.load_pages.page_game))
+        self.state_Game_Running_Goal.exited.connect(lambda: print('exiting goal page\n'))
+        
 
         self.state_Game_Paused.entered.connect(self.game_pause_dialog.show)
         self.state_Game_Paused.entered.connect(self.gc.pause)
